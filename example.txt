@@ -1,0 +1,31 @@
+# 7. Example prediction on new data
+# Example: New DSP request data
+new_data = pd.DataFrame({
+    'pub_id': [123],
+    'ad_unit_id': [456],
+    'ad_type_id': [789],
+    'platform_id': [1],
+    'country': ['US'],
+    'make': ['Samsung'],
+    'model': ['Galaxy S21'],
+    'dsp_id': [101],
+    'tmax': [300],
+    'schain_length': [2],
+    'Date': [pd.Timestamp('2024-12-19 14:30:00')],
+    'region': [0],  # Use appropriate default values or placeholders
+    'lineitem_id': [0],
+    'adsize_id': [0],
+    'bidprice': [0],
+    'pub_rev': [0],
+    'winning_domain': [0],
+    'winning_seat_id': [0]
+})
+
+# Process new data like the training data
+new_data['Date'] = pd.to_datetime(new_data['Date'])
+new_data['day_of_week'] = new_data['Date'].dt.dayofweek
+new_data['hour_of_day'] = new_data['Date'].dt.hour
+
+new_data = new_data[categorical_features + numerical_features]
+predicted_probability = pipeline.predict_proba(new_data)[:, 1]
+print(f"Predicted probability of non-zero bid: {predicted_probability[0]}")
